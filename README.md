@@ -1,78 +1,79 @@
-# 🧬 Protein Explorer: Technical Documentation
+# 🧬 Protein Explorer
 
-## 1. Project Overview
-The **Protein Explorer** is a high-assurance bioinformatics web application designed to translate complex biological data from the **European Bioinformatics Institute (EBI)** into a user-friendly, interactive dashboard. It serves as a "Data Translator" for researchers and students, providing immediate visual and structural insights into protein sequences based on gene identity.
+A high-assurance bioinformatics web application designed to translate complex biological data from the **European Bioinformatics Institute (EBI)** into a user-friendly, interactive 3D dashboard. 
 
----
-
-## 2. Core Features
-* **Strict Identity Matching:** Prevents "fuzzy" matches; the system ensures 100% accuracy by validating user input against official gene nomenclature.
-* **Dual-View Interface:**
-    * **Dashboard View:** A data-rich experience featuring interactive 3D modeling.
-    * **Minimalist View:** A high-contrast table optimized for rapid data retrieval.
-* **Interactive 3D Rendering:** Uses WebGL to generate a procedural "Ball-and-Stick" model of the protein, colored according to biological CPK standards.
-* **Responsive Design:** Architected to maintain usability across desktop and mobile browsers.
+This tool serves as a "Data Translator" for researchers and students, providing immediate visual and structural insights into protein sequences based on strict gene identity.
 
 ---
 
-## 3. The Tech Stack ("The Engine Room")
+## 🚀 Live Demo
+**https://protein-explorer-i3k6.onrender.com/**
+
+*(Note: This application is hosted on a free cloud tier. If it has been inactive for a while, please allow up to 50 seconds for the server to "wake up" on your first search.)*
+
+---
+
+## ✨ Core Features
+
+* **Interactive 3D WebGL Rendering:** Uses Three.js to generate a procedural "Ball-and-Stick" model of the protein. The visualization uses biological CPK standards (Carbon=Grey, Oxygen=Red, Nitrogen=Blue) and features full orbit controls (drag to rotate, scroll to zoom).
+* **Strict Identity Matching Gate:** Prevents "fuzzy" or partial matches. The backend system ensures 100% data accuracy by validating user input against official EBI gene nomenclature before rendering.
+* **Dual-View UI:** * **Dashboard View:** A data-rich experience featuring the interactive 3D model and sequence data.
+    * **Minimalist View:** A high-contrast table optimized for rapid, tabular data retrieval.
+* **Zero-Overhead Favicon:** Utilizes an inline SVG Data URL for the 🧬 emoji favicon, reducing HTTP requests and improving load times.
+
+---
+
+## 🛠️ The Tech Stack ("The Engine Room")
+
+This project adheres to strict **Separation of Concerns (SoC)**, decoupling logic, styling, and presentation.
 
 | Component | Technology | Purpose |
 | :--- | :--- | :--- |
-| **Backend** | Node.js / Express | Server-side logic and API routing. |
+| **Backend** | Node.js / Express | Server-side logic, routing, and data validation. |
 | **Frontend** | EJS (Embedded JS) | Dynamic server-side HTML rendering. |
-| **3D Engine** | Three.js / WebGL | Interactive molecular visualization. |
-| **Data Fetching** | Axios | Secure asynchronous communication with EBI. |
-| **Security** | Helmet.js / Rate-Limit | Protection against XSS, clickjacking, and DOS. |
-| **Styling** | CSS3 | Responsive layouts and UI state management. |
+| **3D Engine** | Three.js | Interactive molecular visualization. |
+| **Data Fetching** | Axios | Secure asynchronous communication with the EBI API. |
+| **Security** | Helmet.js / Rate-Limit | Protection against XSS, clickjacking, and DDoS. |
 
 ---
 
-## 4. System Architecture & Data Flow
+## 🛡️ Security & Production Readiness
 
-The application follows a strict **Separation of Concerns (SoC)**, ensuring that logic, styling, and presentation are decoupled for maintainability.
-
-
-
-1.  **Request:** User submits a gene name (e.g., `TP53`) via the Frontend.
-2.  **Controller:** The Express server validates the input and proxies the request to the EBI API using Axios.
-3.  **Validation:** The Backend performs a strict string comparison to ensure the returned data matches the requested gene.
-4.  **Response:** The server injects the validated JSON into the EJS template.
-5.  **Render:** The browser loads the CSS for layout and the `main.js` script to initialize the 3D WebGL scene.
-
----
-
-## 5. Security & Engineering Discipline
-To meet production-grade standards, the following guardrails were implemented:
-* **Content Security Policy (CSP):** Strict whitelisting of external CDNs to prevent malicious script injection.
+To meet production-grade standards, the application is fortified with multiple security layers:
+* **Content Security Policy (CSP):** Strict whitelisting of external CDNs (Cloudflare, jsDelivr, EBI) to prevent malicious script injection.
 * **Rate Limiting:** Users are restricted to 50 queries every 15 minutes to prevent API abuse and protect system resources.
-* **Input Sanitization:** All user inputs are trimmed and case-normalized before being processed.
-* **Error Boundaries:** Graceful handling of network failures, 404s, and empty datasets to prevent application crashes.
+* **Input Sanitization:** All user inputs are trimmed, case-normalized, and checked for minimum length before network requests are dispatched.
 
 ---
 
-## 6. Local Setup & Installation
+## 💻 Local Setup & Installation
 
 **Pre-requisites:** Node.js (v18+) and npm installed.
 
-1.  **Clone & Install:**
-    ```bash
-    git clone [your-repo-url]
-    cd protein-explorer
-    npm install
-    ```
-2.  **Configuration:**
-    Ensure `package.json` contains `"type": "module"`.
-3.  **Execution:**
-    ```bash
-    npm start
-    ```
-4.  **Access:**
-    Open `http://localhost:3000` in your browser.
+1. **Clone the repository:**
+   ```bash
+   git clone [https://github.com/YourUsername/protein-explorer.git](https://github.com/YourUsername/protein-explorer.git)
+   cd protein-explorer
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Run the server:**
+   ```bash
+   npm start
+   ```
+
+4. **Access the application:**
+   Open `http://localhost:3000` in your web browser.
 
 ---
 
-## 7. Future Roadmap
-* **PDB Integration:** Moving from conceptual 3D models to loading real `.pdb` atomic coordinate files.
-* **Export Functionality:** Allowing users to download protein data as PDF or JSON.
-* **Multi-Gene Comparison:** Side-by-side analysis of two different proteins.
+## 🗺️ Future Roadmap
+* **PDB Integration:** Moving from procedural conceptual models to parsing real `.pdb` atomic coordinate files.
+* **Export Functionality:** Allowing users to download protein data summaries as PDF or JSON.
+* **Multi-Gene Comparison:** Side-by-side visual analysis of two different proteins.
+```
+
