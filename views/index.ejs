@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Protein Explorer Capstone</title>
+  
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  
+  <link rel="stylesheet" href="/styles/main.css">
+  <script src="/scripts/main.js" defer></script>
+</head>
+<body>
+
+<div class="container">
+  <h1><a href="/" class="logo-link">🧬 Protein Explorer</a></h1>
+  <p>Search the EBI Database by gene name (e.g., BRCA1, INS, TP53).</p>
+
+  <form class="search-box" action="/search" method="POST">
+    <input type="text" name="geneName" placeholder="Enter gene name..." required>
+    <button type="submit">Search EBI Database</button>
+  </form>
+
+  <% if (error) { %>
+    <div class="error"><%= error %></div>
+  <% } %>
+
+  <% if (proteinData) { %>
+    <div class="view-controls">
+      <button class="view-btn active" id="btn-dashboard">Dashboard View</button>
+      <button class="view-btn" id="btn-minimalist">Summary</button>
+    </div>
+
+    <div id="dashboard-view">
+      <div class="card">
+        <h3>General Information</h3>
+        <p><strong>Gene:</strong> <%= proteinData.gene ? proteinData.gene[0].name.value : 'N/A' %></p>
+        <p><strong>Protein:</strong> <%= proteinData.protein && proteinData.protein.recommendedName ? proteinData.protein.recommendedName.fullName.value : 'N/A' %></p>
+        <p><strong>Organism:</strong> <%= proteinData.organism ? proteinData.organism.names[0].value : 'N/A' %></p>
+      </div>
+
+      <div class="card">
+        <h3>Interactive 3D Structure</h3>
+        <p style="font-size: 12px; color: #666; margin-top: 0;"><em>Click and drag to rotate. Scroll to zoom.</em></p>
+        <div id="canvas-container"></div>
+      </div>
+
+      <div class="card">
+        <h3>Sequence Data</h3>
+        <p><strong>Length:</strong> <%= proteinData.sequence ? proteinData.sequence.length : 'N/A' %> Amino Acids</p>
+        <p><strong>Mass:</strong> <%= proteinData.sequence ? proteinData.sequence.mass : 'N/A' %> Daltons</p>
+      </div>
+    </div>
+
+    <div id="minimalist-view">
+      <table>
+        <tr><th>Attribute</th><th>Value</th></tr>
+        <tr><td>Gene</td><td><%= proteinData.gene ? proteinData.gene[0].name.value : 'N/A' %></td></tr>
+        <tr><td>Protein</td><td><%= proteinData.protein && proteinData.protein.recommendedName ? proteinData.protein.recommendedName.fullName.value : 'N/A' %></td></tr>
+        <tr><td>Organism</td><td><%= proteinData.organism ? proteinData.organism.names[0].value : 'N/A' %></td></tr>
+        <tr><td>Length</td><td><%= proteinData.sequence ? proteinData.sequence.length : 'N/A' %> AA</td></tr>
+      </table>
+    </div>
+  <% } %>
+</div>
+
+</body>
+</html>
