@@ -7,7 +7,7 @@ name: Protein Explorer Keep-Alive Bot
 on:
   schedule:
     # POSIX Cron syntax: Run every 14 minutes
-    - cron: '*/14 * * * *'
+    - cron: '*/5 * * * *'
 
   # Allows for manual execution via the GitHub UI for immediate testing
   workflow_dispatch:
