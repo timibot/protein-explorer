@@ -1,0 +1,27 @@
+# Purpose: Prevents Render free-tier instance from sleeping via scheduled HTTP pings.
+# Preconditions: App must be deployed and publicly accessible at the target URL.
+# Postconditions: Server maintains active state; transient HTTP errors do not fail the workflow.
+
+name: Protein Explorer Keep-Alive Bot
+
+on:
+  schedule:
+    # POSIX Cron syntax: Run every 14 minutes
+    - cron: '*/14 * * * *'
+
+  # Allows for manual execution via the GitHub UI for immediate testing
+  workflow_dispatch:
+
+jobs:
+  ping-server:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping target URL
+        # We use standard curl to hit the homepage.
+        # -s disables progress meter.
+        # -f fails silently on server errors (HTTP 400+).
+        # || echo ensures the exit code is 0 (success) even if the site is temporarily down, preventing alert spam.
+        run: |
+          echo "Initiating keep-alive sequence for Protein Explorer..."
+          curl -s -f https://protein-explorer.onrender.com/ || echo "Target unreachable or returned non-200. Ignoring to prevent CI failure."
+          echo "Keep-alive sequence complete."
